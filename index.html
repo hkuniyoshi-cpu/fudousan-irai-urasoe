@@ -396,7 +396,7 @@
 /* ============================================================
    Config
    ============================================================ */
-const GAS_URL = 'GAS_URL をここに貼り付け';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxiMWI1-y7MkJqd6v1A0G97YQlgO2cL77CcVZNKQVTijQnTuBQjsDE9q6caCmrZmKWmjA/exec';
 const CACHE_KEY = 'fudousan_irai_cms_v1';
 const CACHE_TTL = 5 * 60 * 1000;
 
@@ -728,24 +728,37 @@ function applyAccess(a) {
 function applySNS(items) {
   const row = document.getElementById('snsRow');
   if (!row || !Array.isArray(items) || !items.length) return;
-  row.innerHTML = items.map(s =>
-    '<a class="sns-item" href="' + esc(s.url || '#') + '" target="_blank" rel="noopener">' +
-      '<span class="icon">' + esc(s.icon || '🔗') + '</span>' +
-      '<span>' + esc(s.name || '') + '</span>' +
-    '</a>'
-  ).join('');
+  const iconMap = {
+    'instagram':'📸','ig':'📸','youtube':'▶️','facebook':'📘','fb':'📘',
+    'line':'💬','tiktok':'🎵','x':'𝕏','twitter':'𝕏','threads':'🧵'
+  };
+  row.innerHTML = items.map(s => {
+    const platform = String(s.platform || s.name || '').trim();
+    const icon = s.icon || iconMap[platform.toLowerCase()] || '🔗';
+    const label = s.handle || platform;
+    return '<a class="sns-item" href="' + esc(s.url || '#') + '" target="_blank" rel="noopener">' +
+      '<span class="icon">' + esc(icon) + '</span>' +
+      '<span>' + esc(label) + '</span>' +
+    '</a>';
+  }).join('');
 }
 
 function applyDelivery(items) {
   const wrap = document.getElementById('deliveryCards');
   if (!wrap || !Array.isArray(items) || !items.length) return;
-  wrap.innerHTML = items.map(d =>
-    '<div class="delivery-card reveal">' +
-      (d.icon ? '<div class="icon">' + esc(d.icon) + '</div>' : '<div class="icon">✨</div>') +
-      '<h4>' + esc(d.name || '') + '</h4>' +
+  wrap.innerHTML = items.map(d => {
+    const icon = d.icon || d.type || '✨';
+    const title = d.title || d.name || '';
+    const btn = d.btnText && d.url
+      ? '<a href="' + esc(d.url) + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;color:var(--coral);font-size:12px;letter-spacing:.1em;">' + esc(d.btnText) + ' →</a>'
+      : '';
+    return '<div class="delivery-card reveal">' +
+      '<div class="icon">' + esc(icon) + '</div>' +
+      '<h4>' + esc(title) + '</h4>' +
       '<p>' + esc(d.desc || '') + '</p>' +
-    '</div>'
-  ).join('');
+      btn +
+    '</div>';
+  }).join('');
   observe(wrap, '.reveal');
 }
 
