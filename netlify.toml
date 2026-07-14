@@ -1,0 +1,5 @@
+# Netlify config (Cloudflare Pages では無視されるが残置)
+[[redirects]]
+  from = "/blog/*"
+  to = "/blog/index.html"
+  status = 200

@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Disallow: /privacy-policy.html
+Disallow: /terms.html
+
+# AI Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://fudousan-irai-urasoe.search-mania.net/sitemap.xml
