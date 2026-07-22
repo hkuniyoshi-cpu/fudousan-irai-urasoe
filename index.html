@@ -13,6 +13,12 @@
 <link rel="canonical" href="https://fudousan-irai-urasoe.search-mania.net/">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="//drive.google.com">
+<link rel="dns-prefetch" href="//lh3.googleusercontent.com">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="株式会社不動産の依頼所 浦添本店">
 <meta property="og:title" content="株式会社不動産の依頼所 浦添本店 | 沖縄・浦添の不動産売買・買取・仲介">
@@ -72,9 +78,9 @@
      ============================= -->
 <div id="page-loader" aria-hidden="true">
   <svg class="loader-stamp" viewBox="0 0 88 88" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="44" cy="44" r="42" fill="#1e3a5f"/>
-    <circle cx="44" cy="44" r="34" fill="none" stroke="#e8734a" stroke-width="1" stroke-dasharray="2.8 2" opacity="0.7"/>
-    <text x="44" y="61" text-anchor="middle" font-family="'Libre Baskerville',serif" font-size="42" font-weight="700" fill="#e8734a">F</text>
+    <circle cx="44" cy="44" r="42" fill="#1a2f4d"/>
+    <circle cx="44" cy="44" r="34" fill="none" stroke="#b89452" stroke-width="1" stroke-dasharray="2.8 2" opacity="0.75"/>
+    <text x="44" y="61" text-anchor="middle" font-family="'Cormorant Garamond','Libre Baskerville',serif" font-size="42" font-weight="700" fill="#b89452">F</text>
   </svg>
   <p class="loader-name">不動産の依頼所 浦添本店</p>
   <div class="loader-dots" aria-label="読み込み中"><span></span><span></span><span></span></div>
@@ -106,19 +112,22 @@
      ============================= -->
 <section class="hero" id="hero">
   <div id="heroPhotoBg" class="hero-photo-bg" aria-hidden="true"></div>
+  <div class="hero-frame" aria-hidden="true"></div>
   <div class="hero-inner container">
-    <span class="hero-eyebrow">REAL ESTATE · URASOE OKINAWA</span>
+    <span class="hero-eyebrow">Real Estate · Urasoe Okinawa</span>
     <h1 class="hero-title">
       家 の こ と 、<br>
-      <span class="accent">コンビニ</span> の よ う に 気 軽 に 。
+      <span class="accent">Trust</span> と 誠 実 な ご 提 案 を 。
     </h1>
+    <div class="hero-divider"></div>
     <p class="hero-sub" id="heroSub">
-      沖縄・浦添で創業10年以上。ファミリー・移住者・住み替えまで、<br>
-      売買・買取・仲介・無料査定を、笑顔と共にお届けします。
+      沖縄・浦添で創業10年以上。<br>
+      売買・買取・仲介・無料査定まで、あなたの「はじめの一歩」を、<br>
+      経験豊富なスタッフが誠実にお手伝いいたします。
     </p>
     <div class="hero-btns">
-      <a href="#cta" class="hero-btn primary" id="heroBtnPrimary">無料相談・査定を予約 →</a>
-      <a href="#about" class="hero-btn ghost">当店について ↓</a>
+      <a href="#cta" class="hero-btn primary" id="heroBtnPrimary">無料相談・査定を予約</a>
+      <a href="#about" class="hero-btn ghost">当店について</a>
     </div>
   </div>
   <div class="hero-scroll">SCROLL</div>
@@ -399,7 +408,7 @@
    ============================================================ */
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxiMWI1-y7MkJqd6v1A0G97YQlgO2cL77CcVZNKQVTijQnTuBQjsDE9q6caCmrZmKWmjA/exec';
 const CACHE_KEY = 'fudousan_irai_cms_v1';
-const CACHE_TTL = 5 * 60 * 1000;
+const CACHE_TTL = 30 * 60 * 1000;
 
 if (history.scrollRestoration) history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
@@ -409,12 +418,19 @@ function _hideLoader() {
   const el = document.getElementById('page-loader');
   if (!el || el.dataset.done) return;
   el.dataset.done = '1';
-  const wait = Math.max(0, 700 - (Date.now() - _loaderStart));
+  const wait = Math.max(0, 500 - (Date.now() - _loaderStart));
   setTimeout(() => {
     el.classList.add('fade-out');
-    setTimeout(() => el.remove(), 650);
+    setTimeout(() => el.remove(), 450);
   }, wait);
 }
+/* CMS fetch does NOT block loader — skeleton loaders in Menu/Reviews cover progressive CMS render */
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  setTimeout(_hideLoader, 700);
+} else {
+  document.addEventListener('DOMContentLoaded', () => setTimeout(_hideLoader, 500));
+}
+setTimeout(_hideLoader, 2500);
 
 /* ============================================================
    Nav scroll behavior
