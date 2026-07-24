@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="skyF" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8f4ec"/>
+      <stop offset="1" stop-color="#f2ede1"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#skyF)"/>
+  <!-- ground -->
+  <path d="M0 240 L400 240 L400 300 L0 300 Z" fill="#eae2cf" opacity="0.6"/>
+  <!-- sun -->
+  <circle cx="330" cy="80" r="26" fill="none" stroke="#b89452" stroke-width="1.5" opacity="0.7"/>
+  <circle cx="330" cy="80" r="16" fill="#d4b578" opacity="0.5"/>
+  <!-- house -->
+  <g stroke="#1a2f4d" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M100 240 L100 150 L200 90 L300 150 L300 240 Z" fill="#fbfaf6"/>
+    <path d="M100 150 L200 90 L300 150" stroke-width="2.4"/>
+    <rect x="180" y="180" width="40" height="60" fill="#f5f0e5"/>
+    <rect x="130" y="170" width="30" height="30" fill="#f5f0e5"/>
+    <rect x="240" y="170" width="30" height="30" fill="#f5f0e5"/>
+    <!-- chimney -->
+    <path d="M250 120 L250 100 L270 100 L270 132" stroke-width="1.8"/>
+  </g>
+  <!-- heart above roof -->
+  <path d="M200 60 C195 52, 182 52, 182 62 C182 72, 200 82, 200 82 C200 82, 218 72, 218 62 C218 52, 205 52, 200 60 Z" fill="#b89452" opacity="0.85"/>
+  <!-- family silhouettes -->
+  <g fill="#1a2f4d">
+    <!-- adult 1 -->
+    <circle cx="70" cy="215" r="7"/>
+    <path d="M63 224 L77 224 L79 260 L61 260 Z"/>
+    <!-- adult 2 -->
+    <circle cx="345" cy="215" r="7"/>
+    <path d="M338 224 L352 224 L354 260 L336 260 Z"/>
+    <!-- child -->
+    <circle cx="88" cy="230" r="5"/>
+    <path d="M83 237 L93 237 L94 260 L82 260 Z"/>
+  </g>
+  <!-- decorative dots -->
+  <circle cx="40" cy="60" r="2" fill="#b89452" opacity="0.6"/>
+  <circle cx="60" cy="90" r="1.5" fill="#b89452" opacity="0.5"/>
+  <circle cx="360" cy="180" r="2" fill="#b89452" opacity="0.5"/>
+</svg>

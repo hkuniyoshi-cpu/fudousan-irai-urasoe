@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="skyV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8f4ec"/>
+      <stop offset="1" stop-color="#efe8d8"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#skyV)"/>
+  <!-- ground -->
+  <path d="M0 250 L400 250 L400 300 L0 300 Z" fill="#e5dcc4" opacity="0.55"/>
+  <!-- buildings, tallest on right implying growth -->
+  <g stroke="#1a2f4d" stroke-width="1.8" stroke-linejoin="round">
+    <rect x="50" y="185" width="60" height="65" fill="#fbfaf6"/>
+    <rect x="120" y="150" width="70" height="100" fill="#fbfaf6"/>
+    <rect x="200" y="115" width="60" height="135" fill="#fbfaf6"/>
+    <rect x="270" y="80" width="70" height="170" fill="#fbfaf6"/>
+  </g>
+  <!-- windows -->
+  <g fill="#1a2f4d" opacity="0.75">
+    <!-- building 1 -->
+    <rect x="60" y="195" width="8" height="10"/>
+    <rect x="76" y="195" width="8" height="10"/>
+    <rect x="92" y="195" width="8" height="10"/>
+    <rect x="60" y="215" width="8" height="10"/>
+    <rect x="76" y="215" width="8" height="10"/>
+    <rect x="92" y="215" width="8" height="10"/>
+    <!-- building 2 -->
+    <rect x="130" y="162" width="8" height="10"/>
+    <rect x="146" y="162" width="8" height="10"/>
+    <rect x="162" y="162" width="8" height="10"/>
+    <rect x="178" y="162" width="8" height="10"/>
+    <rect x="130" y="182" width="8" height="10"/>
+    <rect x="146" y="182" width="8" height="10"/>
+    <rect x="162" y="182" width="8" height="10"/>
+    <rect x="178" y="182" width="8" height="10"/>
+    <rect x="130" y="202" width="8" height="10"/>
+    <rect x="146" y="202" width="8" height="10"/>
+    <rect x="162" y="202" width="8" height="10"/>
+    <rect x="178" y="202" width="8" height="10"/>
+    <rect x="130" y="222" width="8" height="10"/>
+    <rect x="146" y="222" width="8" height="10"/>
+    <rect x="162" y="222" width="8" height="10"/>
+    <rect x="178" y="222" width="8" height="10"/>
+    <!-- building 3 -->
+    <rect x="210" y="128" width="8" height="10"/>
+    <rect x="225" y="128" width="8" height="10"/>
+    <rect x="240" y="128" width="8" height="10"/>
+    <rect x="210" y="148" width="8" height="10"/>
+    <rect x="225" y="148" width="8" height="10"/>
+    <rect x="240" y="148" width="8" height="10"/>
+    <rect x="210" y="168" width="8" height="10"/>
+    <rect x="225" y="168" width="8" height="10"/>
+    <rect x="240" y="168" width="8" height="10"/>
+    <rect x="210" y="188" width="8" height="10"/>
+    <rect x="225" y="188" width="8" height="10"/>
+    <rect x="240" y="188" width="8" height="10"/>
+    <rect x="210" y="208" width="8" height="10"/>
+    <rect x="225" y="208" width="8" height="10"/>
+    <rect x="240" y="208" width="8" height="10"/>
+    <!-- building 4 -->
+    <rect x="280" y="92" width="8" height="10"/>
+    <rect x="295" y="92" width="8" height="10"/>
+    <rect x="312" y="92" width="8" height="10"/>
+    <rect x="328" y="92" width="8" height="10"/>
+    <rect x="280" y="112" width="8" height="10"/>
+    <rect x="295" y="112" width="8" height="10"/>
+    <rect x="312" y="112" width="8" height="10"/>
+    <rect x="328" y="112" width="8" height="10"/>
+    <rect x="280" y="132" width="8" height="10"/>
+    <rect x="295" y="132" width="8" height="10"/>
+    <rect x="312" y="132" width="8" height="10"/>
+    <rect x="328" y="132" width="8" height="10"/>
+    <rect x="280" y="152" width="8" height="10"/>
+    <rect x="295" y="152" width="8" height="10"/>
+    <rect x="312" y="152" width="8" height="10"/>
+    <rect x="328" y="152" width="8" height="10"/>
+    <rect x="280" y="172" width="8" height="10"/>
+    <rect x="295" y="172" width="8" height="10"/>
+    <rect x="312" y="172" width="8" height="10"/>
+    <rect x="328" y="172" width="8" height="10"/>
+    <rect x="280" y="192" width="8" height="10"/>
+    <rect x="295" y="192" width="8" height="10"/>
+    <rect x="312" y="192" width="8" height="10"/>
+    <rect x="328" y="192" width="8" height="10"/>
+  </g>
+  <!-- upward arrow (growth) -->
+  <g stroke="#b89452" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 100 L130 80 L200 65 L275 45"/>
+    <path d="M275 45 L260 42 M275 45 L272 60"/>
+  </g>
+  <!-- coin (gold) -->
+  <g>
+    <circle cx="55" cy="55" r="16" fill="#b89452" opacity="0.85"/>
+    <circle cx="55" cy="55" r="16" fill="none" stroke="#8a6f3a" stroke-width="1.2"/>
+    <text x="55" y="61" text-anchor="middle" font-family="serif" font-size="18" fill="#fbfaf6" font-weight="700">¥</text>
+  </g>
+  <!-- decorative -->
+  <circle cx="370" cy="40" r="2" fill="#b89452" opacity="0.6"/>
+  <circle cx="380" cy="60" r="1.5" fill="#b89452" opacity="0.5"/>
+</svg>

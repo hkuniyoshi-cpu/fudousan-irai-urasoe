@@ -551,12 +551,20 @@ section { padding: 110px 0; position: relative; }
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
   background-size: cover; background-position: center;
   position: relative;
+  transition: transform .6s ease;
 }
 .scene-card .scene-img::after {
   content: '';
   position: absolute; inset: 0;
   background: linear-gradient(to bottom, transparent 40%, rgba(26,47,77,.55));
 }
+.scene-card .scene-img--illust {
+  background: var(--bg-warm);
+  background-size: cover;
+  background-position: center;
+}
+.scene-card .scene-img--illust::after { display: none; }
+.scene-card:hover .scene-img--illust { transform: scale(1.03); }
 .scene-body {
   padding: 22px 22px 26px;
 }

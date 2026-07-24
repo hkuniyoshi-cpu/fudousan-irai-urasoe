@@ -34,7 +34,7 @@
 <meta name="twitter:description" content="沖縄・浦添の不動産売買・買取・仲介。10年以上の実績で安心。">
 <meta name="twitter:image" content="https://fudousan-irai-urasoe.search-mania.net/ogp.svg">
 
-<link rel="stylesheet" href="shared.css?v=2">
+<link rel="stylesheet" href="shared.css?v=3">
 <meta name="google-site-verification" content="LZg90oxtbqi0v6An7Fc0uO3ufbqcmW4_Qp9mCI2u6wk" />
 
 <script type="application/ld+json">
@@ -619,10 +619,21 @@ function applyFeatures(items) {
 function applyForYou(items) {
   const grid = document.getElementById('scenesGrid');
   if (!grid || !Array.isArray(items) || !items.length) return;
+  const illust = {
+    'ファミリー'     : '/illustrations/foryou-family.svg',
+    '移住者'         : '/illustrations/foryou-migrate.svg',
+    'ご年配・相続'   : '/illustrations/foryou-inheritance.svg',
+    '投資家'         : '/illustrations/foryou-investor.svg',
+  };
   grid.innerHTML = items.map(f => {
-    const img = f.image ? driveImg(f.image) : '';
+    let img = f.image ? driveImg(f.image) : '';
+    let illustClass = '';
+    if (!img) {
+      const key = String(f.label || '').trim();
+      if (illust[key]) { img = illust[key]; illustClass = ' scene-img--illust'; }
+    }
     return '<div class="scene-card reveal">' +
-      '<div class="scene-img"' + (img ? ' style="background-image:url(\'' + esc(img) + '\')"' : '') + '></div>' +
+      '<div class="scene-img' + illustClass + '"' + (img ? ' style="background-image:url(\'' + esc(img) + '\')"' : '') + '></div>' +
       '<div class="scene-body">' +
         (f.label ? '<span class="label">' + esc(f.label) + '</span>' : '') +
         '<p class="caption">' + esc(f.caption || '') + '</p>' +

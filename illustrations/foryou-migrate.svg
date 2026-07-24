@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="skyM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8f4ec"/>
+      <stop offset="1" stop-color="#eae4d3"/>
+    </linearGradient>
+    <linearGradient id="seaM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d4d9df"/>
+      <stop offset="1" stop-color="#b8bfc9"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#skyM)"/>
+  <!-- sea -->
+  <rect y="200" width="400" height="100" fill="url(#seaM)"/>
+  <!-- wave lines -->
+  <g stroke="#1a2f4d" stroke-width="1" fill="none" opacity="0.35">
+    <path d="M0 220 Q50 215, 100 220 T200 220 T300 220 T400 220"/>
+    <path d="M0 240 Q50 235, 100 240 T200 240 T300 240 T400 240"/>
+    <path d="M0 265 Q50 260, 100 265 T200 265 T300 265 T400 265"/>
+  </g>
+  <!-- island (Okinawa-like) -->
+  <path d="M240 210 Q270 195, 310 200 Q345 205, 355 215 Q360 220, 355 225 L240 225 Z" fill="#8a9b6a" opacity="0.85"/>
+  <path d="M240 210 Q270 195, 310 200 Q345 205, 355 215" stroke="#1a2f4d" stroke-width="1.5" fill="none"/>
+  <!-- palm tree on island -->
+  <g stroke="#1a2f4d" stroke-width="1.6" fill="none" stroke-linecap="round">
+    <path d="M295 210 L295 175"/>
+    <path d="M295 175 Q283 168, 275 172"/>
+    <path d="M295 175 Q307 168, 315 172"/>
+    <path d="M295 175 Q288 165, 285 155"/>
+    <path d="M295 175 Q302 165, 305 155"/>
+  </g>
+  <!-- airplane -->
+  <g fill="#1a2f4d">
+    <path d="M60 110 L160 100 L165 106 L162 108 L155 111 L145 116 L70 122 Z"/>
+    <path d="M90 108 L100 90 L108 90 L104 108 Z"/>
+    <path d="M120 106 L128 96 L132 96 L128 108 Z"/>
+    <path d="M75 118 L82 128 L88 128 L85 118 Z"/>
+  </g>
+  <!-- plane trail (dashed gold) -->
+  <path d="M60 118 Q30 128, 10 148" stroke="#b89452" stroke-width="2" fill="none" stroke-dasharray="4 4" stroke-linecap="round" opacity="0.75"/>
+  <!-- sun -->
+  <circle cx="80" cy="60" r="22" fill="none" stroke="#b89452" stroke-width="1.5" opacity="0.7"/>
+  <circle cx="80" cy="60" r="14" fill="#d4b578" opacity="0.5"/>
+  <!-- decorative -->
+  <circle cx="200" cy="50" r="1.8" fill="#b89452" opacity="0.6"/>
+  <circle cx="220" cy="70" r="1.5" fill="#b89452" opacity="0.5"/>
+  <circle cx="350" cy="90" r="2" fill="#b89452" opacity="0.5"/>
+</svg>
