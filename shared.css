@@ -175,7 +175,7 @@ a { color: inherit; text-decoration: none; }
   opacity: 0; z-index: 0;
   transition: opacity 1.2s ease;
 }
-.hero-photo-bg.visible { opacity: 0.35; }
+.hero-photo-bg.visible { opacity: 0.88; }
 
 /* ---- Ocean Particles (Okinawa sea sparkle) ---- */
 .hero-particles {
@@ -220,7 +220,10 @@ a { color: inherit; text-decoration: none; }
 .hero-photo-bg::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(251,250,246,0.75) 0%, rgba(251,250,246,0.90) 60%, rgba(251,250,246,0.98) 100%);
+  /* 写真を主役にしつつ、文字が乗る中央にだけソフトな半透明ヴィネットで可読性確保 */
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 55%, rgba(251,250,246,0.62) 0%, rgba(251,250,246,0.28) 55%, rgba(251,250,246,0.10) 100%),
+    linear-gradient(180deg, rgba(251,250,246,0.20) 0%, rgba(251,250,246,0.02) 40%, rgba(251,250,246,0.20) 78%, rgba(251,250,246,0.55) 100%);
 }
 /* Decorative geometric background pattern */
 .hero::before {
