@@ -1275,12 +1275,9 @@ footer {
   .hero-btns { gap: 12px; flex-direction: column; align-items: center; }
   .hero-btn { width: 100%; max-width: 300px; justify-content: center; padding: 14px 28px; font-size: 12px; }
 
-  .menu-grid { grid-template-columns: 1fr; gap: 18px; }
   .features-list { gap: 28px; }
   .feature-item { grid-template-columns: 52px 1fr; gap: 18px; }
   .feature-num { font-size: 26px; }
-  .scenes { grid-template-columns: 1fr; gap: 18px; }
-  .cards { grid-template-columns: 1fr; gap: 16px; }
   .access-info dl { grid-template-columns: 84px 1fr; }
   .footer-inner { grid-template-columns: 1fr; text-align: center; gap: 34px; }
   .footer-brand p { max-width: 320px; margin: 0 auto; }
@@ -1326,6 +1323,60 @@ footer {
     flex: 0 0 78vw; max-width: 280px;
     scroll-snap-align: start;
     min-width: 0;
+  }
+
+  /* Menu / Service — horizontal scroll carousel */
+  .menu-grid {
+    display: flex; flex-wrap: nowrap;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px; padding: 0 2px 16px;
+    scrollbar-width: none;
+    grid-template-columns: unset;
+  }
+  .menu-grid::-webkit-scrollbar { display: none; }
+  .menu-card, .menu-skel {
+    flex: 0 0 78vw; max-width: 300px;
+    scroll-snap-align: start;
+    min-width: 0;
+    min-height: 230px;
+  }
+
+  /* For You — horizontal scroll carousel */
+  .scenes {
+    display: flex; flex-wrap: nowrap;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px; padding: 0 2px 16px;
+    scrollbar-width: none;
+    grid-template-columns: unset;
+  }
+  .scenes::-webkit-scrollbar { display: none; }
+  .scene-card {
+    flex: 0 0 78vw; max-width: 300px;
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  /* Delivery / Extras — horizontal scroll carousel */
+  .cards {
+    display: flex; flex-wrap: nowrap;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px; padding: 0 2px 16px;
+    scrollbar-width: none;
+    grid-template-columns: unset;
+  }
+  .cards::-webkit-scrollbar { display: none; }
+  .delivery-card {
+    flex: 0 0 78vw; max-width: 300px;
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  /* スワイプヒント: 各カルーセルの下に "← swipe →" を出す */
+  .menu-grid, .scenes, .cards, .reviews-grid, .wall {
+    scroll-padding-left: 20px;
   }
 
   .cta-btns { flex-direction: column; align-items: center; }
