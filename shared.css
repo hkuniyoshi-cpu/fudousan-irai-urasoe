@@ -175,7 +175,7 @@ a { color: inherit; text-decoration: none; }
   opacity: 0; z-index: 0;
   transition: opacity 1.2s ease;
 }
-.hero-photo-bg.visible { opacity: 0.88; }
+.hero-photo-bg.visible { opacity: 0.85; }
 
 /* ---- Ocean Particles (Okinawa sea sparkle) ---- */
 .hero-particles {
@@ -254,6 +254,37 @@ a { color: inherit; text-decoration: none; }
   text-align: center;
   color: var(--ink);
 }
+/* テキストエリア背後のソフト・カード（ラジアル・ガラス）
+   写真は残しつつ、文字部分だけ半透明クリームで浮かせて可読性を確保 */
+.hero-inner::before {
+  content: '';
+  position: absolute;
+  top: 10%; bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(780px, 94%);
+  background:
+    radial-gradient(ellipse 62% 55% at 50% 48%,
+      rgba(251,250,246,0.88) 0%,
+      rgba(251,250,246,0.75) 38%,
+      rgba(251,250,246,0.40) 70%,
+      rgba(251,250,246,0) 100%);
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(1px);
+}
+@media (max-width: 720px) {
+  .hero-inner::before {
+    top: 6%; bottom: 8%;
+    width: 100%;
+    background:
+      radial-gradient(ellipse 78% 62% at 50% 50%,
+        rgba(251,250,246,0.94) 0%,
+        rgba(251,250,246,0.82) 45%,
+        rgba(251,250,246,0.50) 78%,
+        rgba(251,250,246,0) 100%);
+  }
+}
 .hero-eyebrow {
   font-family: var(--serif);
   font-size: 12px;
@@ -273,19 +304,20 @@ a { color: inherit; text-decoration: none; }
 .hero-eyebrow::before { left: 0; }
 .hero-eyebrow::after { right: 0; }
 .hero-eyebrow {
-  text-shadow: 0 1px 2px rgba(251,250,246,0.85);
+  text-shadow: 0 1px 3px rgba(251,250,246,1), 0 0 10px rgba(251,250,246,0.9);
 }
 .hero-title {
   font-family: var(--serif-jp);
   font-size: clamp(28px, 4.8vw, 46px);
   line-height: 1.55;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: .1em;
-  color: var(--navy);
+  color: var(--navy-dark);
   margin-bottom: 24px;
   text-shadow:
-    0 1px 2px rgba(251,250,246,0.85),
-    0 0 22px rgba(251,250,246,0.55);
+    0 1px 3px rgba(251,250,246,1),
+    0 0 12px rgba(251,250,246,0.9),
+    0 0 28px rgba(251,250,246,0.6);
 }
 .hero-title .accent {
   color: var(--gold-dark);
@@ -314,10 +346,10 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink);
   max-width: 620px;
   margin: 0 auto 44px;
-  font-weight: 400;
+  font-weight: 500;
   text-shadow:
-    0 1px 2px rgba(251,250,246,0.85),
-    0 0 16px rgba(251,250,246,0.65);
+    0 1px 3px rgba(251,250,246,1),
+    0 0 10px rgba(251,250,246,0.9);
 }
 .hero-btns {
   display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
