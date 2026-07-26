@@ -34,7 +34,7 @@
 <meta name="twitter:description" content="沖縄・浦添の不動産売買・買取・仲介。10年以上の実績で安心。">
 <meta name="twitter:image" content="https://fudousan-irai-urasoe.search-mania.net/ogp.svg">
 
-<link rel="stylesheet" href="shared.css?v=3">
+<link rel="stylesheet" href="shared.css?v=4">
 <meta name="google-site-verification" content="LZg90oxtbqi0v6An7Fc0uO3ufbqcmW4_Qp9mCI2u6wk" />
 
 <script type="application/ld+json">
@@ -112,6 +112,12 @@
      ============================= -->
 <section class="hero" id="hero">
   <div id="heroPhotoBg" class="hero-photo-bg" aria-hidden="true"></div>
+  <canvas id="heroParticles" class="hero-particles" aria-hidden="true"></canvas>
+  <svg class="hero-waves" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path class="wave wave-back" d="M0,60 C240,90 480,30 720,60 C960,90 1200,30 1440,60 L1440,120 L0,120 Z" />
+    <path class="wave wave-mid"  d="M0,70 C240,40 480,100 720,70 C960,40 1200,100 1440,70 L1440,120 L0,120 Z" />
+    <path class="wave wave-front" d="M0,85 C240,110 480,60 720,85 C960,110 1200,60 1440,85 L1440,120 L0,120 Z" />
+  </svg>
   <div class="hero-frame" aria-hidden="true"></div>
   <div class="hero-inner container">
     <span class="hero-eyebrow">Real Estate · Urasoe Okinawa</span>
@@ -433,16 +439,136 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
 setTimeout(_hideLoader, 2500);
 
 /* ============================================================
-   Nav scroll behavior
+   Nav scroll behavior + Hero parallax
    ============================================================ */
 (function() {
   const nav = document.getElementById('nav');
+  const heroFrame = document.querySelector('.hero-frame');
+  const heroTitle = document.querySelector('.hero-title');
+  const heroSub   = document.querySelector('.hero-sub');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let ticking = false;
   function onScroll() {
-    if (window.scrollY > 40) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (y > 40) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
+        if (!reduce && y < 800) {
+          if (heroFrame) heroFrame.style.transform = 'translate3d(0,' + (y * 0.18) + 'px,0)';
+          if (heroTitle) heroTitle.style.transform = 'translate3d(0,' + (y * 0.08) + 'px,0)';
+          if (heroSub)   heroSub.style.transform   = 'translate3d(0,' + (y * 0.05) + 'px,0)';
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+})();
+
+/* ============================================================
+   Ocean Particles — Okinawa sea sparkle
+   Very subtle: gold + pale blue drifting upward with sine sway
+   ============================================================ */
+(function() {
+  const canvas = document.getElementById('heroParticles');
+  if (!canvas) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const COLORS = [
+    'rgba(184,148,82,',   // gold
+    'rgba(184,148,82,',
+    'rgba(212,181,120,',  // gold-light
+    'rgba(168,196,217,',  // sea pale blue
+    'rgba(168,196,217,',
+    'rgba(255,255,255,'   // white sparkle
+  ];
+
+  let W = 0, H = 0, dpr = 1, particles = [];
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.clientWidth = canvas.offsetWidth;
+    H = canvas.clientHeight = canvas.offsetHeight;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    initParticles();
+  }
+
+  function initParticles() {
+    const isSmall = W < 720;
+    const count = isSmall ? 22 : 55;
+    particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push(makeP(true));
+    }
+  }
+  function makeP(rand) {
+    return {
+      x: Math.random() * W,
+      y: rand ? Math.random() * H : H + Math.random() * 40,
+      r: 0.9 + Math.random() * 2.4,
+      vy: 0.10 + Math.random() * 0.35,           // upward drift
+      sw: 0.4 + Math.random() * 1.0,              // sine amp
+      sf: 0.005 + Math.random() * 0.012,          // sine freq
+      ph: Math.random() * Math.PI * 2,
+      op: 0.15 + Math.random() * 0.55,
+      op0: 0,
+      twk: 0.6 + Math.random() * 1.6,
+      c:  COLORS[(Math.random() * COLORS.length) | 0]
+    };
+  }
+
+  let t = 0;
+  function frame() {
+    t += 0.012;
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.y -= p.vy;
+      const sway = Math.sin(t * p.twk + p.ph) * p.sw;
+      const twinkle = 0.6 + 0.4 * Math.sin(t * 2 * p.twk + p.ph);
+      const opacity = (p.op * twinkle).toFixed(3);
+      ctx.beginPath();
+      ctx.fillStyle = p.c + opacity + ')';
+      ctx.arc(p.x + sway, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+      if (p.y < -10) {
+        particles[i] = makeP(false);
+      }
+    }
+    rafId = requestAnimationFrame(frame);
+  }
+
+  let rafId = 0;
+  resize();
+  frame();
+
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(resize, 180);
+  }, { passive: true });
+
+  // Pause when hero out of view (save battery)
+  const heroEl = document.getElementById('hero');
+  if (heroEl && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          if (!rafId) frame();
+        } else {
+          if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+        }
+      });
+    }, { threshold: 0 });
+    io.observe(heroEl);
+  }
 })();
 
 /* ============================================================
