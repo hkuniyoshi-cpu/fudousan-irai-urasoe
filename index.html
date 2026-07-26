@@ -34,7 +34,7 @@
 <meta name="twitter:description" content="沖縄・浦添の不動産売買・買取・仲介。10年以上の実績で安心。">
 <meta name="twitter:image" content="https://fudousan-irai-urasoe.search-mania.net/ogp.svg">
 
-<link rel="stylesheet" href="shared.css?v=4">
+<link rel="stylesheet" href="shared.css?v=5">
 <meta name="google-site-verification" content="LZg90oxtbqi0v6An7Fc0uO3ufbqcmW4_Qp9mCI2u6wk" />
 
 <script type="application/ld+json">
@@ -161,9 +161,30 @@
         </div>
       </div>
       <div class="about-photos">
-        <div class="about-photo">
-          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80" alt="住まいイメージ" loading="lazy">
-          <span class="caption">当店の様子（CMS 差し替え可）</span>
+        <div class="about-photo about-photo--placeholder" aria-hidden="true">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="phBg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f8f4ec"/>
+                <stop offset="1" stop-color="#e5dcc4"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="300" fill="url(#phBg)"/>
+            <path d="M0 235 L400 235 L400 300 L0 300 Z" fill="#d4c8ae" opacity="0.55"/>
+            <g stroke="#1a2f4d" stroke-width="1.8" fill="none" stroke-linejoin="round">
+              <path d="M120 235 L120 165 L200 115 L280 165 L280 235 Z" fill="#fbfaf6"/>
+              <path d="M120 165 L200 115 L280 165" stroke-width="2.2"/>
+              <rect x="182" y="188" width="36" height="47" fill="#f5f0e5"/>
+              <rect x="140" y="180" width="26" height="26" fill="#f5f0e5"/>
+              <rect x="234" y="180" width="26" height="26" fill="#f5f0e5"/>
+            </g>
+            <g stroke="#b89452" stroke-width="1.2" fill="none" opacity="0.55">
+              <path d="M0 210 Q100 205, 200 210 T400 210"/>
+              <path d="M0 220 Q100 215, 200 220 T400 220"/>
+            </g>
+            <circle cx="330" cy="70" r="22" fill="none" stroke="#b89452" stroke-width="1.4" opacity="0.55"/>
+            <circle cx="330" cy="70" r="14" fill="#d4b578" opacity="0.4"/>
+          </svg>
         </div>
       </div>
     </div>
@@ -611,6 +632,12 @@ function stars(n) {
   n = Number(n) || 5;
   return '★'.repeat(Math.max(0, Math.min(5, Math.round(n))));
 }
+function fadeInEl(el) {
+  if (!el) return;
+  el.style.opacity = '0';
+  el.style.transition = 'opacity .55s ease';
+  requestAnimationFrame(() => requestAnimationFrame(() => { el.style.opacity = '1'; }));
+}
 
 /* ============================================================
    Apply Functions
@@ -641,10 +668,7 @@ function applySettings(s) {
   if (s.bookUrl) {
     document.querySelectorAll('#navCta, #heroBtnPrimary, #ctaBtn2').forEach(a => a.href = s.bookUrl);
   }
-  if (s.tagline) {
-    const heroSub = document.getElementById('heroSub');
-    if (heroSub) heroSub.textContent = s.tagline;
-  }
+  /* Hero copy is design-locked. Tagline from Sheets does NOT override hero — it's meant for footer/meta only. */
   if (s.gbpUrl) {
     var gbpUrl = s.gbpUrl.trim();
     if (gbpUrl.startsWith('<')) {
@@ -663,10 +687,8 @@ function applySettings(s) {
 
 function applyHero(h) {
   if (!h) return;
-  if (Array.isArray(h.subLines) && h.subLines[0]) {
-    const el = document.getElementById('heroSub');
-    if (el) el.textContent = h.subLines[0];
-  }
+  /* Hero title/sub are design-locked; Sheets subLines do NOT swap the visible copy.
+     Only the photo slideshow is CMS-driven. */
   const photos = Array.isArray(h.photos) ? h.photos.filter(p => p.image) : [];
   if (!photos.length) return;
   const bg = document.getElementById('heroPhotoBg');
@@ -694,24 +716,20 @@ function applyHero(h) {
 
 function applyAbout(a) {
   if (!a) return;
-  const paras = Array.isArray(a.paragraphs) ? a.paragraphs : [];
-  if (paras.length) {
-    const wrap = document.querySelector('#about .paragraphs');
-    if (wrap) wrap.innerHTML = paras.map(p => '<p>' + esc(p) + '</p>').join('');
-  }
-  if (a.quote) {
-    const q = document.querySelector('#about .about-quote');
-    if (q) q.innerHTML = esc(a.quote).replace(/\n/g, '<br>');
-  }
+  /* About text (paragraphs + quote) is design-locked. Only photos are CMS-driven —
+     the hardcoded fallback (unsplash placeholder) is only replaced when the client uploads a real photo. */
   const photos = Array.isArray(a.photos) ? a.photos.filter(p => p.image) : [];
   if (photos.length) {
     const wrap = document.querySelector('#about .about-photos');
     if (wrap) {
+      wrap.style.opacity = '0';
+      wrap.style.transition = 'opacity .5s ease';
       wrap.innerHTML = photos.map(p =>
         '<div class="about-photo"><img src="' + esc(driveImg(p.image)) + '" alt="' + esc(p.caption || '') + '" loading="lazy">' +
         (p.caption ? '<span class="caption">' + esc(p.caption) + '</span>' : '') +
         '</div>'
       ).join('');
+      requestAnimationFrame(() => { wrap.style.opacity = '1'; });
     }
   }
 }
@@ -727,6 +745,7 @@ function applyMenu(items) {
       '<p>' + esc(m.desc || '') + '</p>' +
     '</div>'
   ).join('');
+  fadeInEl(grid);
   observe(grid, '.reveal');
 }
 
@@ -739,6 +758,7 @@ function applyFeatures(items) {
       '<div><h3>' + esc(f.title || f.name || '') + '</h3><p>' + esc(f.desc || f.text || '') + '</p></div>' +
     '</div>'
   ).join('');
+  fadeInEl(list);
   observe(list, '.reveal');
 }
 
@@ -766,6 +786,7 @@ function applyForYou(items) {
       '</div>' +
     '</div>';
   }).join('');
+  fadeInEl(grid);
   observe(grid, '.reveal');
 }
 
@@ -792,6 +813,7 @@ function applyReviews(items) {
             '</a>';
   }
   grid.innerHTML = html;
+  fadeInEl(grid);
 }
 
 function applyBlog(items) {
@@ -833,6 +855,7 @@ function applyBlog(items) {
       </div>
     ${tagClose}`;
   }).join('');
+  fadeInEl(wall);
   if (typeof observe === 'function') observe(wall, '.e');
 }
 
@@ -895,6 +918,7 @@ function applySNS(items) {
       '<span>' + esc(label) + '</span>' +
     '</a>';
   }).join('');
+  fadeInEl(row);
 }
 
 function applyDelivery(items) {
@@ -913,6 +937,7 @@ function applyDelivery(items) {
       btn +
     '</div>';
   }).join('');
+  fadeInEl(wrap);
   observe(wrap, '.reveal');
 }
 
@@ -925,6 +950,7 @@ function applyFAQ(items) {
       '<div class="answer">' + esc(q.a || '').replace(/\n/g, '<br>') + '</div>' +
     '</details>'
   ).join('');
+  fadeInEl(list);
 }
 
 function applyCTA(c) {

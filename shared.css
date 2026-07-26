@@ -444,8 +444,11 @@ section { padding: 110px 0; position: relative; }
   aspect-ratio: 4/3;
   box-shadow: var(--shadow);
 }
-.about-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
-.about-photo:hover img { transform: scale(1.04); }
+.about-photo img,
+.about-photo svg { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s ease; }
+.about-photo:hover img,
+.about-photo:hover svg { transform: scale(1.04); }
+.about-photo--placeholder { background: var(--bg-warm); }
 .about-photo .caption {
   position: absolute; bottom: 0; left: 0; right: 0;
   padding: 14px 20px;
@@ -1183,6 +1186,10 @@ footer {
    ============================================================ */
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity .8s ease, transform .8s ease; }
 .reveal.in { opacity: 1; transform: translateY(0); }
+
+/* CMS populate fade-in (features/forYou/delivery/faq/sns/menu/reviews grids) */
+.cms-fade { opacity: 0; transition: opacity .55s ease; }
+.cms-fade.cms-loaded { opacity: 1; }
 
 /* ============================================================
    Responsive
