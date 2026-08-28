@@ -43,8 +43,14 @@ function findPost(posts, slug) {
   return posts.find(function(b) {
     if (!b) return false;
     if (b.url) {
-      const m = String(b.url).match(/\/blog\/([^\/\?#]+)/);
-      if (m && m[1] === slug) return true;
+      const raw = String(b.url).trim();
+      /* Sheets F列は "2026-08-28-0829/" のように相対スラッグだけ入る場合がある */
+      const m1 = raw.match(/\/blog\/([^\/\?#]+)/);
+      if (m1 && m1[1] === slug) return true;
+      /* 相対パスから末尾セグメントを抽出（?/#/末尾スラッシュを剥がす） */
+      const cleaned = raw.replace(/[?#].*$/, '').replace(/\/+$/, '');
+      const seg = cleaned.split('/').pop();
+      if (seg && seg === slug) return true;
     }
     if (b.date) {
       const d = String(b.date).replace(/[\/\.]/g, '-').replace(/[^0-9-]/g, '');
