@@ -215,10 +215,13 @@ export async function onRequest(context) {
   if (!slug) return renderNotFound(slug);
 
   try {
-    const upstream = await fetch(GAS_URL + '?blog_all=1', {
-      redirect: 'follow',
-      cf: { cacheTtl: 900, cacheEverything: true },
-    });
+    /* redirect: 'manual' で 302 を捕捉 → 1 回だけ手動フォロー（GAS 無限ループ対策） */
+    const first = await fetch(GAS_URL + '?blog_all=1', { redirect: 'manual' });
+    let upstream = first;
+    if (first.status >= 300 && first.status < 400) {
+      const location = first.headers.get('location');
+      if (location) upstream = await fetch(location, { redirect: 'follow' });
+    }
     if (!upstream.ok) return renderNotFound(slug);
     const data = await upstream.json();
     const posts = (data && data.blog) || [];
