@@ -66,7 +66,18 @@
     "https://www.fudousannoirai.com/",
     "https://www.instagram.com/fudousannoiraisho/",
     "https://www.youtube.com/channel/UCdkby1N348kVEZBVQAQ3aUA",
-    "https://ja-jp.facebook.com/fudousannoirisyo/"
+    "https://ja-jp.facebook.com/fudousannoirisyo/",
+    "https://share.google/UePDLDZ4fTHq4b6UV",
+    "https://suumo.jp/ikkodate/kaisha/__JJ_JJ051FD001_arz1090z2bsz1020z2kcz1164375001.html",
+    "https://www.homes.co.jp/realtor/mid-3217164hdlY4TDWND5U/",
+    "https://toushi.homes.co.jp/shop/detail/38154/",
+    "https://www.athome.co.jp/ahks/fudousannoirai.html",
+    "https://realestate.yahoo.co.jp/company/used/bc00017165/",
+    "https://map.yahoo.co.jp/v3/place/hfslnC8nB62",
+    "https://www.mapion.co.jp/phonebook/M21002/47208/24730228779/",
+    "https://www.navitime.co.jp/poi?spot=01376-18080507030",
+    "https://goohome.jp/fudousan/realtor/552/",
+    "https://chukodate.chintaistyle.jp/result/detail-about-agent_305967.html"
   ]
 }
 </script>
@@ -839,7 +850,7 @@ function applyBlog(items) {
 
     const slugMatch = (b.url || '').match(/\/blog\/([^\/\?#]+)/);
     const postSlug  = slugMatch ? slugMatch[1] : (b.date || '');
-    const blogHref  = postSlug ? `/blog/?post=${postSlug}&n=${i}` : null;
+    const blogHref  = postSlug ? `/blog/${encodeURIComponent(postSlug)}/` : null;
     const tagOpen  = blogHref
       ? `<a href="${blogHref}" class="e blog-card reveal">`
       : `<article class="e blog-card reveal" role="button" tabindex="0" data-idx="${i}">`;
