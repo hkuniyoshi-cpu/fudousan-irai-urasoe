@@ -1,3 +1,5 @@
+dist/
+.wrangler/
 Code.gs
 gas/
 .clasp.json

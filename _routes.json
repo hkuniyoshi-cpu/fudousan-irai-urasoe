@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "include": ["/", "/video", "/video/*", "/blog", "/blog/*", "/sitemap.xml"],
+  "exclude": []
+}

@@ -1,41 +1,64 @@
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxiMWI1-y7MkJqd6v1A0G97YQlgO2cL77CcVZNKQVTijQnTuBQjsDE9q6caCmrZmKWmjA/exec';
+// GET /sitemap.xml — 動画とコラムの一覧から動的生成。載せるのは「200・index可・正規URL」だけ
+// 動画ページには動画サイトマップ用のタグも付ける
 
-/* Cloudflare の redirect: 'follow' は GAS の /exec → /macros/echo のチェーンで
-   稀に無限ループする（cf.cache と組合わせると顕在化）。
-   redirect: 'manual' で 302 だけ捕捉し 1 回だけ手動フォローする */
-async function fetchGas(url) {
-  const first = await fetch(url, { redirect: 'manual' });
-  if (first.status >= 300 && first.status < 400) {
-    const location = first.headers.get('location');
-    if (location) {
-      return fetch(location, { redirect: 'follow' });
-    }
-  }
-  return first;
-}
+import { SITE_URL, VIDEO_CATS, getVideos, getPosts, ytThumb } from '../lib/core.js';
+
+const x = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 export async function onRequest(context) {
+  let videos, posts;
   try {
-    const upstream = await fetchGas(GAS_URL + '?sitemap=1');
-    if (!upstream.ok) {
-      return new Response('<!-- upstream error: ' + upstream.status + ' -->', {
-        status: 502,
-        headers: { 'Content-Type': 'application/xml; charset=utf-8' },
-      });
-    }
-    const xml = await upstream.text();
-    return new Response(xml, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-        'X-Robots-Tag': 'noindex',
-      },
-    });
-  } catch (err) {
-    return new Response('<!-- sitemap fetch failed: ' + (err && err.message || err) + ' -->', {
-      status: 500,
-      headers: { 'Content-Type': 'application/xml; charset=utf-8' },
+    [videos, posts] = await Promise.all([getVideos(context), getPosts(context)]);
+  } catch (e) {
+    // 中身を落とした不完全なサイトマップを 200 で返すと Google が URL を見失うので 503 にする
+    return new Response('sitemap temporarily unavailable', {
+      status: 503,
+      headers: { 'retry-after': '600', 'cache-control': 'no-store' },
     });
   }
+
+  const out = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">',
+  ];
+  const add = (loc, lastmod, extra) => {
+    out.push('  <url>', `    <loc>${x(SITE_URL + loc)}</loc>`);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(lastmod || '')) out.push(`    <lastmod>${lastmod}</lastmod>`);
+    if (extra) out.push(extra);
+    out.push('  </url>');
+  };
+
+  const latestVideo = videos[0] && videos[0].date;
+  const latestPost = posts[0] && posts[0].date;
+  const latest = [latestVideo, latestPost].filter(Boolean).sort().pop();
+
+  add('/', latest);
+  add('/video/', latestVideo);
+  for (const c of VIDEO_CATS) {
+    const first = videos.find(v => v.category === c.key);
+    if (first) add(`/video/?cat=${c.slug}`, first.date);
+  }
+  add('/blog/', latestPost);
+
+  for (const v of videos) {
+    add(`/video/${v.id}/`, v.date, [
+      '    <video:video>',
+      `      <video:thumbnail_loc>${x(ytThumb(v.id, 'hqdefault'))}</video:thumbnail_loc>`,
+      `      <video:title>${x(v.title.slice(0, 100))}</video:title>`,
+      `      <video:description>${x(v.desc)}</video:description>`,
+      `      <video:player_loc>${x('https://www.youtube.com/embed/' + v.id)}</video:player_loc>`,
+      v.iso ? `      <video:publication_date>${x(v.iso)}</video:publication_date>` : '',
+      '    </video:video>',
+    ].filter(Boolean).join('\n'));
+  }
+  for (const p of posts) add(`/blog/${encodeURIComponent(p.slug)}/`, p.date);
+
+  out.push('</urlset>');
+  return new Response(out.join('\n'), {
+    headers: {
+      'content-type': 'application/xml; charset=utf-8',
+      'cache-control': 'public, max-age=1800',
+      'x-robots-tag': 'noindex',
+    },
+  });
 }
