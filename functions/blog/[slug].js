@@ -105,8 +105,8 @@ ${ctaBox()}
 ${older ? `<a href="/blog/${esc(older.slug)}/"><small>← 前の記事</small>${esc(older.title)}</a>` : '<span></span>'}
 ${newer ? `<a class="next" href="/blog/${esc(newer.slug)}/"><small>次の記事 →</small>${esc(newer.title)}</a>` : '<span></span>'}
 </nav>
-${videos.length ? `<section class="related"><h2 class="sec-title">代表・福本の最新動画</h2><div class="grid grid--3">${videos.slice(0, 3).map(v => videoCard(v)).join('\n')}</div></section>` : ''}
 ${related.length ? `<section class="related"><h2 class="sec-title">あわせて読みたいコラム</h2><div class="grid grid--3">${related.map(p => postCard(p)).join('\n')}</div></section>` : ''}
+${videos.length ? `<section class="related"><h2 class="sec-title">動画でもお伝えしています</h2><div class="grid grid--3">${videos.slice(0, 3).map(v => videoCard(v)).join('\n')}</div></section>` : ''}
 <p class="back"><a class="btn btn--line" href="/blog/">コラム一覧へ</a></p>`;
 
   return page({

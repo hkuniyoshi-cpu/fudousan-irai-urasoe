@@ -1,9 +1,10 @@
-// GET / — 静的 index.html の各枠に、最新の動画・コラム・クチコミを初期HTMLとして差し込む
+// GET / — 静的 index.html の各枠に、最新のコラム・クチコミ・動画を初期HTMLとして差し込む
 // （JS で後から描画すると、検索エンジンや AI が読む初期HTMLに記事リンクが1本も出ないため）
+// 主役は浦添本店のコラム。動画は「動画でもお伝えしています」として3本だけ添える
 
 import {
-  VIDEO_CATS, getVideos, getPosts, getReviews,
-  videoCard, postCard, esc, fmtDate, ytThumb,
+  POST_CATS, getVideos, getPosts, getReviews,
+  videoCard, postCard, esc, fmtDate, driveImg,
 } from '../lib/core.js';
 
 // キャッシュが空のときでも、この時間までは待って中身を入れる。超えたら枠の中の案内文のまま返す
@@ -14,34 +15,34 @@ export async function onRequest(context) {
   const type = res.headers.get('content-type') || '';
   if (res.status !== 200 || !type.includes('text/html')) return res;
 
-  const [videos, posts, rev] = await Promise.all([
-    getVideos(context, { waitMs: WAIT_MS }).catch(() => null),
+  const [posts, videos, rev] = await Promise.all([
     getPosts(context, { waitMs: WAIT_MS }).catch(() => null),
+    getVideos(context, { waitMs: 0 }).catch(() => null),
     getReviews(context, { waitMs: 0 }).catch(() => null),
   ]);
 
   const rw = new HTMLRewriter();
   const fill = (sel, inner) => rw.on(sel, { element(el) { el.setInnerContent(inner, { html: true }); } });
 
-  if (videos && videos.length) {
-    const f = videos[0];
-    fill('#featureVideo', `<a class="feature" href="/video/${esc(f.id)}/">
-<span class="feature__thumb"><img src="${ytThumb(f.id, 'hqdefault')}" alt="" width="480" height="360" fetchpriority="high"><span class="play play--lg" aria-hidden="true"></span></span>
-<span class="feature__body"><span class="meta"><span class="tag">最新の動画</span><span class="tag tag--plain">${esc(f.category)}</span><time datetime="${esc(f.date)}">${esc(fmtDate(f.date))}</time></span>
+  if (posts && posts.length) {
+    const f = posts[0];
+    const img = driveImg(f.image, 1200);
+    fill('#featurePost', `<a class="feature" href="/blog/${esc(f.slug)}/">
+<span class="feature__thumb feature__thumb--photo">${img ? `<img src="${esc(img)}" alt="" width="1200" height="750" fetchpriority="high">` : ''}</span>
+<span class="feature__body"><span class="meta"><span class="tag">最新のコラム</span><span class="tag tag--plain">${esc(f.category)}</span><time datetime="${esc(f.date)}">${esc(fmtDate(f.date))}</time></span>
 <h3 class="feature__title">${esc(f.title)}</h3>
 <span class="feature__desc">${esc(f.desc)}</span>
-<span class="more">この動画のページへ</span></span></a>`);
-    fill('#latestVideos', videos.slice(1, 7).map(v => videoCard(v)).join('\n'));
-    fill('#videoCats', VIDEO_CATS.map(c => {
-      const cnt = videos.filter(v => v.category === c.key).length;
-      return cnt ? `<a class="theme" href="/video/?cat=${c.slug}"><strong>${esc(c.key)}</strong><small>${cnt}本</small><span>${esc(c.lead)}</span></a>` : '';
+<span class="more">このコラムを読む</span></span></a>`);
+    fill('#latestPosts', posts.slice(1, 7).map(p => postCard(p)).join('\n'));
+    fill('#postCats', POST_CATS.map(c => {
+      const cnt = posts.filter(p => p.category === c.key).length;
+      return cnt ? `<a class="theme" href="/blog/?cat=${c.slug}"><strong>${esc(c.key)}</strong><small>${cnt}件</small><span>${esc(c.lead)}</span></a>` : '';
     }).join('\n'));
-    fill('#videoCount', String(videos.length));
+    fill('#postCount', String(posts.length));
   }
 
-  if (posts && posts.length) {
-    fill('#latestPosts', posts.slice(0, 6).map(p => postCard(p)).join('\n'));
-    fill('#postCount', String(posts.length));
+  if (videos && videos.length) {
+    fill('#latestVideos', videos.slice(0, 3).map(v => videoCard(v)).join('\n'));
   }
 
   if (rev && rev.reviews.length) {

@@ -1,7 +1,7 @@
 // GET /video/ — 動画一覧を SSR（全動画への通常の <a href> を初期HTMLに出す）
 
 import {
-  SITE_URL, SITE_SHORT, YT_CHANNEL_NAME, YT_CHANNEL_URL, VIDEO_CATS,
+  SITE_URL, SITE_SHORT, YT_CHANNEL_NAME, VIDEO_CATS,
   getVideos, html, page, redirect, notFound, unavailable, videoCard, pager, esc, ld,
 } from '../../lib/core.js';
 
@@ -36,7 +36,7 @@ export async function onRequest(context) {
   const heading = cat ? `${cat.key}の動画` : '動画一覧';
   const lead = cat
     ? cat.lead
-    : `公式YouTube「${YT_CHANNEL_NAME}」の動画を、概要欄の内容とあわせて掲載しています。物件紹介・査定の考え方・沖縄移住など、テーマから探せます。`;
+    : `コラムとあわせてご覧いただける動画です。不動産の依頼所の公式YouTube「${YT_CHANNEL_NAME}」から、物件紹介・査定の考え方・沖縄移住などを掲載しています。`;
   const slice = list.slice((cur - 1) * PER_PAGE, cur * PER_PAGE);
 
   // 0本のテーマにはリンクを張らない（空ページへクローラーを誘導しない）
@@ -75,7 +75,7 @@ ${VIDEO_CATS.map(c => {
 ${tabs}
 <div class="grid grid--3">${slice.map((v, i) => videoCard(v, i < 3)).join('\n')}</div>
 ${pager(cur, pages, qs)}
-<p class="back"><a class="btn btn--line" href="${YT_CHANNEL_URL}" target="_blank" rel="noopener">YouTubeチャンネルを見る</a></p>`;
+<p class="back"><a class="btn btn--line" href="/blog/">コラム一覧へ</a></p>`;
 
   return html(page({
     title: `${heading}${cur > 1 ? `（${cur}ページ目）` : ''}｜${SITE_SHORT}`,

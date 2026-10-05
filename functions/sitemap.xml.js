@@ -33,13 +33,14 @@ export async function onRequest(context) {
   const latest = [latestVideo, latestPost].filter(Boolean).sort().pop();
 
   add('/', latest);
+  add('/blog/', latestPost);
+  for (const p of posts) add(`/blog/${encodeURIComponent(p.slug)}/`, p.date);
+
   add('/video/', latestVideo);
   for (const c of VIDEO_CATS) {
     const first = videos.find(v => v.category === c.key);
     if (first) add(`/video/?cat=${c.slug}`, first.date);
   }
-  add('/blog/', latestPost);
-
   for (const v of videos) {
     add(`/video/${v.id}/`, v.date, [
       '    <video:video>',
@@ -51,7 +52,6 @@ export async function onRequest(context) {
       '    </video:video>',
     ].filter(Boolean).join('\n'));
   }
-  for (const p of posts) add(`/blog/${encodeURIComponent(p.slug)}/`, p.date);
 
   out.push('</urlset>');
   return new Response(out.join('\n'), {

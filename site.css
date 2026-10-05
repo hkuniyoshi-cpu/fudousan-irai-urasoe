@@ -325,3 +325,9 @@ a:hover .play { background: var(--gold-text); transform: scale(1.06); }
   /* 一覧のサムネイルは切らずに 16:9 のまま見せる */
   main.wrap > .grid--3 .vcard__thumb, .related .vcard__thumb { aspect-ratio: 16 / 9; align-self: flex-start; }
 }
+
+/* 店舗紹介・動画セクションの導入文と、リンクではない特徴カード */
+.store-lead { max-width: 46em; margin-bottom: 26px; color: var(--ink-soft); }
+div.theme { grid-template-columns: 1fr; }
+div.theme:hover { box-shadow: none; }
+.feature__thumb--photo { aspect-ratio: 16 / 10; }
