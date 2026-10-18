@@ -331,3 +331,8 @@ a:hover .play { background: var(--gold-text); transform: scale(1.06); }
 div.theme { grid-template-columns: 1fr; }
 div.theme:hover { box-shadow: none; }
 .feature__thumb--photo { aspect-ratio: 16 / 10; }
+
+/* トップの動画は最新1本だけ。下に一覧への導線 */
+.feature--video { margin-bottom: 0; }
+.video-more { margin-top: 22px; text-align: center; }
+@media (max-width: 640px) { .video-more .btn { width: 100%; } }

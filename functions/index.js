@@ -1,10 +1,10 @@
 // GET / — 静的 index.html の各枠に、最新のコラム・クチコミ・動画を初期HTMLとして差し込む
 // （JS で後から描画すると、検索エンジンや AI が読む初期HTMLに記事リンクが1本も出ないため）
-// 主役は浦添本店のコラム。動画は「動画でもお伝えしています」として3本だけ添える
+// 主役は浦添本店のコラム。動画は最新1本だけ添え、残りは /video/ へ案内する
 
 import {
   POST_CATS, getVideos, getPosts, getReviews,
-  videoCard, postCard, esc, fmtDate, driveImg,
+  postCard, esc, fmtDate, driveImg, ytThumb,
 } from '../lib/core.js';
 
 // キャッシュが空のときでも、この時間までは待って中身を入れる。超えたら枠の中の案内文のまま返す
@@ -41,8 +41,15 @@ export async function onRequest(context) {
     fill('#postCount', String(posts.length));
   }
 
+  // 動画は最新の1本だけ。残りは「他の動画はこちら」から /video/ へ
   if (videos && videos.length) {
-    fill('#latestVideos', videos.slice(0, 3).map(v => videoCard(v)).join('\n'));
+    const v = videos[0];
+    fill('#latestVideo', `<a class="feature feature--video" href="/video/${esc(v.id)}/">
+<span class="feature__thumb"><img src="${ytThumb(v.id, 'hqdefault')}" alt="" width="480" height="360" loading="lazy"><span class="play play--lg" aria-hidden="true"></span></span>
+<span class="feature__body"><span class="meta"><span class="tag">最新の動画</span><time datetime="${esc(v.date)}">${esc(fmtDate(v.date))}</time></span>
+<h3 class="feature__title">${esc(v.title)}</h3>
+<span class="feature__desc">${esc(v.desc)}</span>
+<span class="more">この動画を見る</span></span></a>`);
   }
 
   if (rev && rev.reviews.length) {
