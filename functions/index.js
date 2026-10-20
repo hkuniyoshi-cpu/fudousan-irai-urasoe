@@ -17,7 +17,7 @@ export async function onRequest(context) {
 
   const [posts, videos, rev] = await Promise.all([
     getPosts(context, { waitMs: WAIT_MS }).catch(() => null),
-    getVideos(context, { waitMs: 0 }).catch(() => null),
+    getVideos(context, { waitMs: 2500 }).catch(() => null),
     getReviews(context, { waitMs: 0 }).catch(() => null),
   ]);
 
