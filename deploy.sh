@@ -6,7 +6,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 rm -rf dist
 mkdir -p dist
-cp index.html site.css favicon.svg ogp.png privacy-policy.html terms.html 404.html robots.txt llms.txt _routes.json dist/
+cp index.html site.css favicon.svg favicon.ico apple-touch-icon.png ogp.png privacy-policy.html terms.html 404.html robots.txt llms.txt _routes.json dist/
 unset CLOUDFLARE_API_TOKEN
 if [ "${1:-}" = "--build-only" ]; then exit 0; fi
 CI=true WRANGLER_SEND_METRICS=false npx wrangler pages deploy dist --project-name fudousan-irai-urasoe --branch main --commit-dirty=true

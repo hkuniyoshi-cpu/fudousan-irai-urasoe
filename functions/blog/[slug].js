@@ -73,7 +73,7 @@ function render(posts, i, post, videos) {
     '@type': 'BlogPosting',
     'headline': post.title,
     'description': post.desc,
-    'image': img || `${SITE_URL}/ogp.png`,
+    'image': img || `${SITE_URL}/ogp.png?v=20261021`,
     'author': { '@type': 'Organization', '@id': `${SITE_URL}/#organization`, 'name': SITE_NAME, 'url': `${SITE_URL}/` },
     'publisher': { '@type': 'Organization', '@id': `${SITE_URL}/#organization`, 'name': SITE_NAME },
     'mainEntityOfPage': { '@type': 'WebPage', '@id': canonical },
